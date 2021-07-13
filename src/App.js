@@ -10,7 +10,8 @@ import Chat from './screens/Chat';
 export default () => {
       return (
         <Router>
-          <Route exact path="/" component={Login} />
+          <Route exact path="/" component={Table} />
+          {/* <Route exact path="/" component={Login} /> */}
           <Route exact path="/mess" component={Chat} />
           <Route exact path="/add" component={AddProduto} />
           <Route exact path="/view" component={Table} />

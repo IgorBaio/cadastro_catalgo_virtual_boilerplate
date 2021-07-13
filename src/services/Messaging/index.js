@@ -13,6 +13,18 @@ const MessagingService = {
         return _messages
       })
   },
+  async getProdutos() {
+    
+    return db
+      .collection('produtos')
+      .then(produtos => {
+        let _produtos = []
+        produtos.forEach(produto => {
+          _produtos.push(produto.data())
+        })
+        return _produtos
+      })
+  },
 
   observeMessages (callback) {
     db.collection('messages').onSnapshot(callback)

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,6 +14,9 @@ import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Button } from "@material-ui/core";
+import { auth, db, firebase } from '../firebase'
+import ProductService from '../services/Product'
+import { useCollection } from "react-firebase-hooks/firestore";
 
 const useStyles = makeStyles(theme => ({
    table: {
@@ -57,34 +60,46 @@ export default function SimpleTable() {
    const [data, updateData] = useState([]);
    const [firstLoad, setLoad] = useState(true);
    let isLoading = true;
-
-   async function getProdutos(){
-      let response = await fetch('/api/produto');
-      let body = await response.json();
-      updateData(body);
-   }
+   const [messagesCollection, loadingMessages, error] = useCollection(
+      db.collection('produtos')
+        .orderBy('created', 'desc')
+        .limit(500)
+    )
+   //  console.log(messagesCollection)
+    useEffect(() => {
+      const newMessages = messagesCollection?.docs
+        .map(doc => {
+         console.log(doc)  
+         return ({
+          ...doc.data(),
+          key: doc.id
+        })}).reverse() || []
+  
+        updateData(newMessages)
+        console.log(newMessages)
+    }, [messagesCollection])
+   
 
    async function deleteFunc(toInput){
-      const response = await fetch(`/api/produto/${toInput}`, {
-         method: "DELETE",
-         mode: "cors",
-         cache:"no-cache",
-         credentials:"same-origin",
-         headers:{
-            "Content-Type":"application/json"
-         },
-         redirect:"follow",
-         referrerPolicy: "no-referrer",
-         body: JSON.stringify(toInput) 
-      });
+      // const response = await fetch(`/api/produto/${toInput}`, {
+      //    method: "DELETE",
+      //    mode: "cors",
+      //    cache:"no-cache",
+      //    credentials:"same-origin",
+      //    headers:{
+      //       "Content-Type":"application/json"
+      //    },
+      //    redirect:"follow",
+      //    referrerPolicy: "no-referrer",
+      //    body: JSON.stringify(toInput) 
+      // });
 
-      let body = await response.json();
-      console.log(body.id);
+      // let body = await response.json();
+      // console.log(body.id);
    }
    
 
    if(firstLoad){
-      getProdutos();
       setLoad(false);
    }
 
@@ -113,12 +128,12 @@ export default function SimpleTable() {
                <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                      <TableRow >
-                        <TableCell align="center" className={classes.header}>Id</TableCell>
                         <TableCell align="center" className={classes.header}>Nome</TableCell>
                         <TableCell align="center" className={classes.header}>Categoria</TableCell>
                         <TableCell align="center" className={classes.header}>Descrição</TableCell>
                         <TableCell align="center" className={classes.header}>Quantidade</TableCell>
-                        <TableCell align="center" className={classes.header}>Codigo de Barras</TableCell>
+                        <TableCell align="center" className={classes.header}>Imagem</TableCell>
+                        <TableCell align="center" className={classes.header}>Preço</TableCell>
                         <TableCell align="center" className={classes.header}>Editar</TableCell>
                         <TableCell align="center" className={classes.header}>Apagar</TableCell>
                      </TableRow>
@@ -126,21 +141,21 @@ export default function SimpleTable() {
                   <TableBody>
                      {data?.map(row=>(
 
-                        <TableRow key={row.nome}>
+                        <TableRow key={row.produto.nome}>
                            
-                           <TableCell align="center">{row.id}</TableCell>
-                           <TableCell align="center">{row.nome}</TableCell>
-                           <TableCell align="center">{row.categoria}</TableCell>
-                           <TableCell align="center">{row.descricao}</TableCell>
-                           <TableCell align="center">{row.quantidade}</TableCell>
-                           <TableCell align="center">{row.codigoBarras}</TableCell>
+                           <TableCell align="center">{row.produto.nome}</TableCell>
+                           <TableCell align="center">{row.produto.categoria}</TableCell>
+                           <TableCell align="center">{row.produto.descricao}</TableCell>
+                           <TableCell align="center">{row.produto.quantidade}</TableCell>
+                           <TableCell align="center"><img style={{height: 100, width:100}} src={row.produto.file.base64 ||row.produto.file } /></TableCell>
+                           <TableCell align="center">{row.produto.preco}</TableCell>
                            <TableCell align="center"><Link to={
                                     {pathname:'/produto_view',
-                                    state:row.id
+                                    state:row
                                     }
                                  }
-                                 id={row.id}
-                                 name={row.nome} ><Button
+                                 id={row.produto.key}
+                                 name={row.produto.nome} ><Button
                                                    fullWidth
                                                    variant="contained"
                                                    color="primary"
@@ -157,7 +172,7 @@ export default function SimpleTable() {
                                                    color="primary"
                                                    preventDefault
                                                    className={classes.submit}
-                                                   onClick={()=>preparaId(row.id)
+                                                   onClick={()=>preparaId(row.produto.id)
                                                    }
 
                                                 >
@@ -169,7 +184,7 @@ export default function SimpleTable() {
                </Table>
             </TableContainer>
          )}
-         <Link className={classes.link} to="/">
+         <Link className={classes.link} to="/add">
             <Typography align="left">
                &#x2B9C; Voltar para o cadastro de produtos
             </Typography>
