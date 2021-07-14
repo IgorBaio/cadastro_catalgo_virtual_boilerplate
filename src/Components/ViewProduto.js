@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -75,7 +75,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ViewProduto = () => {
   let location = useLocation();
-  console.log(location.state);
   const [id, setId] = useState(location.state.key);
   const [nome, setNome] = useState(location.state.produto.nome);
   const [preco, setPreco] = useState(location.state.produto.preco);
@@ -86,31 +85,10 @@ const ViewProduto = () => {
   );
   const [message, setMessage] = useState("Nada salvo na sessão ainda.");
   const [selectedFile, setSelectedFile] = useState(location.state.produto.file);
-  console.log(selectedFile)
 
   const handleFiles = (files) => {
-    console.log(files.fileList[0].name);
-    // console.log(files.base64)
     setSelectedFile({ name: files.fileList[0].name, base64: files.base64 });
   };
-
-  useEffect(() => {
-    // fetch(`/api/produto/${location.state}`)
-    //   .then(data => {
-    //     return data.json();
-    //   })
-    //   .then(data => {
-    //     setId(data.id);
-    //     setNome(data.nome);
-    //     setCategoria(data.categoria);
-    //     setPreco(data.preco);
-    //     setDescricao(data.descricao);
-    //     setQuantidade(data.quantidade);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-  }, []);
 
   async function updateItem(toInput) {
     db.collection("produtos")
@@ -125,36 +103,12 @@ const ViewProduto = () => {
           file: toInput.file,
         },
         created: firebase.firestore.FieldValue.serverTimestamp(),
+      }).then(() => {
+        setMessage("Dado editado com sucesso");
+      })
+      .catch((error) => {
+        setMessage("Falha na edição");
       });
-
-    // add({
-    //    produto: {
-    //      nome: toInput.nome,
-    //    preco: toInput.preco,
-    //    descricao: toInput.descricao,
-    //    quantidade: toInput.quantidade,
-    //    categoria: toInput.categoria,
-    //    file: toInput.file
-
-    //    },
-    //    created: firebase.firestore.FieldValue.serverTimestamp()
-    //  })
-    // const response = await fetch("/api/produto", {
-    //    method: "PUT",
-    //    mode: "cors",
-    //    cache:"no-cache",
-    //    credentials:"same-origin",
-    //    headers:{
-    //       "Content-Type":"application/json"
-    //    },
-    //    redirect:"follow",
-    //    referrerPolicy: "no-referrer",
-    //    body: JSON.stringify(toInput)
-    // });
-
-    // let body = await response.json();
-    // console.log(body.id);
-    // setMessage(body.id ? "Dado atualizado com sucesso" : "Falha na atualização do dado");
   }
 
   const handlePrecoChange = (event) => setPreco(event.target.value);
@@ -252,9 +206,7 @@ const ViewProduto = () => {
             </Grid>
             <Grid item xs={12}>
               <PriceInput
-                onChange={(e) => {
-                  setPreco(e.target.value);
-                }}
+                onChange={handlePrecoChange}
                 value={preco}
                 preco={preco}
                 setPreco={setPreco}
@@ -263,7 +215,7 @@ const ViewProduto = () => {
             <Grid item xs={12}>
               <ReactFileReader base64={true} handleFiles={handleFiles}>
                 <Button variant="contained" component="label">
-                  Upload File
+                  Enviar arquivo
                 </Button>
               </ReactFileReader>
               {selectedFile && <Typography>{selectedFile.name}</Typography>}
