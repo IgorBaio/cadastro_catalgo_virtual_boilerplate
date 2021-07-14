@@ -181,14 +181,7 @@ const useStyles = makeStyles((theme) => ({
                          </Typography>
                          <Typography>{" " + row.produto.quantidade}</Typography>
                        </div>
-                       <div style={{ display: "flex", justifyContent: "center" }}>
-                         <Typography
-                           style={{ fontWeight: "bold", marginRight: 5 }}
-                         >
-                           QUANTIDADE:{" "}
-                         </Typography>
-                         <Typography>{" " + row.produto.quantidade}</Typography>
-                       </div>
+                       
                        <div
                          style={{
                            display: "flex",
