@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/cadastro_catalgo_virtual_boilerplate/static/css/main.afd9c080.chunk.css",
+    "main.js": "/cadastro_catalgo_virtual_boilerplate/static/js/main.71940642.chunk.js",
+    "main.js.map": "/cadastro_catalgo_virtual_boilerplate/static/js/main.71940642.chunk.js.map",
+    "runtime-main.js": "/cadastro_catalgo_virtual_boilerplate/static/js/runtime-main.1973a1b7.js",
+    "runtime-main.js.map": "/cadastro_catalgo_virtual_boilerplate/static/js/runtime-main.1973a1b7.js.map",
+    "static/js/2.ee361cc3.chunk.js": "/cadastro_catalgo_virtual_boilerplate/static/js/2.ee361cc3.chunk.js",
+    "static/js/2.ee361cc3.chunk.js.map": "/cadastro_catalgo_virtual_boilerplate/static/js/2.ee361cc3.chunk.js.map",
+    "index.html": "/cadastro_catalgo_virtual_boilerplate/index.html",
+    "static/css/main.afd9c080.chunk.css.map": "/cadastro_catalgo_virtual_boilerplate/static/css/main.afd9c080.chunk.css.map",
+    "static/js/2.ee361cc3.chunk.js.LICENSE.txt": "/cadastro_catalgo_virtual_boilerplate/static/js/2.ee361cc3.chunk.js.LICENSE.txt",
+    "static/media/uwn.3b97a0cc.png": "/cadastro_catalgo_virtual_boilerplate/static/media/uwn.3b97a0cc.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1973a1b7.js",
+    "static/js/2.ee361cc3.chunk.js",
+    "static/css/main.afd9c080.chunk.css",
+    "static/js/main.71940642.chunk.js"
+  ]
+}
