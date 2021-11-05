@@ -12,7 +12,7 @@ export default () => {
         <Router>
           <Route exact path="/" component={Table} />
           {/* <Route exact path="/" component={Login} /> */}
-          <Route exact path="/mess" component={Chat} />
+          {/* <Route exact path="/mess" component={Chat} /> */}
           <Route exact path="/add" component={AddProduto} />
           <Route exact path="/view" component={Table} />
           <Route exact path="/produto_view" component={ViewProduto} />

@@ -289,23 +289,23 @@ const SimpleTable = (props) => {
             </TableHead>
             <TableBody>
               {data?.map((row) => (
-                <TableRow key={row.produto.nome}>
-                  <TableCell align="center">{row.produto.nome}</TableCell>
-                  <TableCell align="center">{row.produto.categoria}</TableCell>
-                  <TableCell align="center">{row.produto.descricao}</TableCell>
-                  <TableCell align="center">{row.produto.quantidade}</TableCell>
+                <TableRow key={row?.produto?.nome}>
+                  <TableCell align="center">{row?.produto?.nome}</TableCell>
+                  <TableCell align="center">{row?.produto?.categoria}</TableCell>
+                  <TableCell align="center">{row?.produto?.descricao}</TableCell>
+                  <TableCell align="center">{row?.produto?.quantidade}</TableCell>
                   <TableCell align="center">
                     <img
                       style={{ height: 100, width: 100 }}
-                      src={row.produto.file.base64 || row.produto.file}
+                      src={row?.produto?.file?.base64 || row?.produto?.file}
                     />
                   </TableCell>
                   <TableCell align="center">{row.produto.preco}</TableCell>
                   <TableCell align="center">
                     <Link
                       to={{ pathname: "/produto_view", state: row }}
-                      id={row.produto.key}
-                      name={row.produto.nome}
+                      id={row?.produto?.key}
+                      name={row?.produto?.nome}
                     >
                       <Button
                         fullWidth
@@ -326,7 +326,7 @@ const SimpleTable = (props) => {
                       color="primary"
                       preventDefault
                       className={classes.submit}
-                      onClick={() => preparaId(row.key)}
+                      onClick={() => preparaId(row?.key)}
                     >
                       X
                     </Button>
